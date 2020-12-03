@@ -134,10 +134,8 @@ void Add(FILE* file)
 
 void Edit(FILE* file, char* filename)
 {
-    // char pattern[256], name[128], phone[128], string[256], line[256], answer, newname[128], newphone[128], newline[256], tempFileName[128];
     char name[128], phone[128], string[256], line[256], answer, newname[128], newphone[128], newline[256], tempFileName[128];
     char* tabPointer;
-    // int count=0, tabPosition;
     int tabPosition;
     FILE* tempfile;
     size_t length;
