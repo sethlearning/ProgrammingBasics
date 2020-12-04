@@ -10,7 +10,7 @@ void Add(FILE*);
 void Edit(FILE*, char*);
 void Remove(FILE*, char*);
 void SelectRecord(FILE*, char*);
-void SwapFiles(FILE*, char*, FILE*, char*);
+void ReplaceFile(FILE*, char*, FILE*, char*);
 void GetChar(char*);
 void GetString(char*);
 void ExitProgram(char*);
@@ -188,7 +188,7 @@ void Edit(FILE* file, char* filename)
             fputs(newline, tempfile);
     }
 
-    SwapFiles(file, filename, tempfile, tempFileName);
+    ReplaceFile(file, filename, tempfile, tempFileName);
 }
 
 void Remove(FILE* file, char* filename)
@@ -220,11 +220,11 @@ void Remove(FILE* file, char* filename)
             fputs(string, tempfile);
     }
 
-    SwapFiles(file, filename, tempfile, tempFileName);
+    ReplaceFile(file, filename, tempfile, tempFileName);
 }
 
 // Removing original file and renaming temp file
-void SwapFiles(FILE* file, char* filename, FILE* tempfile, char* tempFileName)
+void ReplaceFile(FILE* file, char* filename, FILE* tempfile, char* tempFileName)
 {
     fclose(tempfile);
     fclose(file);
