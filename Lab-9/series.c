@@ -12,7 +12,8 @@ int main(int argc, char* argv[])
     double result[8][2];
 
     logo();
-    printf("Лабораторная работа №9.\nСоставить таблицу функции: (1/2) - (Pi/4) * abs(six(x))\n\n");
+    printf("Лабораторная работа №9.\nСоставить таблицу функции: (1/2) - (Pi/4) * abs(six(x)) = cos(2*x)/3 + cos(4*x)/15 + ... + cos(2*n*x)/(4*pow(n,2)-1)\n");
+    printf("x = [0.1; 0.8], h = 0.1, e = 0.00001\n\n");
 
     x = x0;
     i = 0;
