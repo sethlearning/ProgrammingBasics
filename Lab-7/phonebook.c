@@ -18,7 +18,7 @@ void ExitProgram(char*);
 int main(int argc, char* argv[])
 {
     int quit = 0;
-    char example[256], filename[256], str[256], command;
+    char example[256], str[256], command;
     FILE* file;
 
     logo();
