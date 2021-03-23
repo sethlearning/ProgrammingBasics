@@ -10,7 +10,7 @@ Use arguments.
 
 ## Lab-1. Расчет формулы
 
-![lab-1](/picts/lab-1.jpg?raw=true)
+![lab-1](/picts/Lab-1.jpg?raw=true)
 
 ## Lab-2. Перевод массы из фунтов в килограммы и граммы
 
