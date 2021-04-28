@@ -1,0 +1,2 @@
+B is a programming language developed at Bell Labs circa 1969.
+It was developed by Ken Thompson and Dennis Ritchie.
