@@ -55,6 +55,7 @@ int main(int argc, char* argv[])
     printf("Значения параметров:\n    listsize = %i\n    autofill = %i\n\n", listsize, autofill);
     // printf("autofill = %i\n", autofill);
 
+    // create
     alist = create();
 
     if (autofill)
@@ -63,6 +64,13 @@ int main(int argc, char* argv[])
         fillInListManual(alist, listsize);
 
     print(alist);
+
+    // insert
+    insert(alist, 3, 100);
+    insert(alist, 15, 200);
+    print(alist);
+
+    // destroy
     destroy(alist);
 
 /*

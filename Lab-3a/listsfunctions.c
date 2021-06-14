@@ -10,6 +10,7 @@ void print(struct thelist *);
 int getValue(struct thelist *, int);
 struct thelist * getAddress(struct thelist *, int);
 void append(struct thelist *, int);
+void insert(struct thelist *, int, int);
 
 struct thelist * create()
 {
@@ -76,16 +77,35 @@ struct thelist * getAddress(struct thelist *alist, int n)
     return tmp;
 }
 
-void append(struct thelist *alist, int n)
+void append(struct thelist *alist, int value)
 {
-    struct thelist *tmp, *new;
+    struct thelist *last, *new;
 
-    tmp = getAddress(alist, alist->info);
+    last = getAddress(alist, alist->info);
 
     new = (struct thelist *)malloc(sizeof(struct thelist));
-    tmp->next = new;
-    alist->info++;
-
-    new->info = n;
+    last->next = new;
     new->next = NULL;
+    new->info = value;
+    alist->info++;
+}
+
+void insert(struct thelist *alist, int n, int value)
+{
+    struct thelist *previous, *next, *new;
+
+    if (n > alist->info)
+    {
+        append(alist, value);
+        return;
+    }
+
+    previous = getAddress(alist, n-1);
+    next = previous->next;
+
+    new = (struct thelist *)malloc(sizeof(struct thelist));
+    previous->next = new;
+    new->next = next;
+    new->info = value;
+    alist->info++;
 }
