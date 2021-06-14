@@ -37,7 +37,7 @@ void destroy(struct thelist *alist)
         tmp = tmpn;
     }
 
-    printf("Removing %i: %i\n", i++, tmp->info);
+    printf("Removing %i: %i\n\n", i++, tmp->info);
     free(tmp);
 }
 

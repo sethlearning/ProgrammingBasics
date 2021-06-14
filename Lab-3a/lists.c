@@ -46,6 +46,7 @@ int main(int argc, char* argv[])
     else
         fillInListManual(alist, listsize);
 
+    printf("Содержимое списка:\n");
     print(alist);
 
     // insert
@@ -71,7 +72,6 @@ int main(int argc, char* argv[])
 
     // destroy
     destroy(alist);
-
 }
 
 void processConfig(FILE *config, int *autof, int *size)
@@ -132,13 +132,7 @@ void fillInListAuto(struct thelist *alist, int size)
     srand(time(NULL));
 
     for (i = 1; i <= size; i++)
-    {
-        t = rand() % 100 - 50;
-        printf("%i  ", t);
-        append(alist, t);
-        // append(alist, rand() % 100 - 50);
-    }
-    printf("\n\n");
+        append(alist, rand() % 100 - 50);
 }
 
 void fillInListManual(struct thelist *alist, int size)
@@ -168,7 +162,6 @@ void countNegatives(struct thelist *alist, int *ncount, int *nsum)
             *nsum += value;
         }
     }
-    printf("Count: %i, Sum: %i\n", *ncount, *nsum);
 }
 
 void exitprogram(char *message)
