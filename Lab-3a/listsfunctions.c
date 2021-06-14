@@ -45,7 +45,7 @@ void print(struct thelist *alist)
 {
     int i;
     int n = alist->info;
-    
+
     if (!n)
     {
         printf("Список пуст!\n");
