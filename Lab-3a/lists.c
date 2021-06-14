@@ -4,6 +4,14 @@
 #include <time.h>
 #include "logo.c"
 
+
+struct thelist
+{
+    int info;
+    struct thelist *next;
+};
+
+
 void exitprogram(char*);
 void processConfig(FILE *config, int *autof, int *size);
 /*
