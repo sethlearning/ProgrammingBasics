@@ -7,6 +7,7 @@
 
 void exitprogram(char*);
 void processConfig(FILE *config, int *autof, int *size);
+void fillInListAuto(struct thelist *, int);
 
 
 
@@ -36,7 +37,7 @@ int main(int argc, char* argv[])
 
     struct thelist *alist;
 
-    int i;
+    int i, t;
 
     // memset(fillmethod, '\0', sizeof(fillmethod));
 
@@ -56,13 +57,9 @@ int main(int argc, char* argv[])
     alist = create();
 
     if (autofill)
-    {
-        for (i = 1; i <= arraysize; i++)
-        {
+        fillInListAuto(alist, arraysize);
 
-        }
-    }
-
+    print(alist);
     destroy(alist);
 
 /*
@@ -169,6 +166,22 @@ void processConfig(FILE *config, int *autof, int *size)
         exitprogram("Ошибка файла конфигурации.\nФайл должен содержать правильные значения параметов arraysize и fillmethod.\n");
     
     // printf("Значения параметров:\n    arraysize = %i\n    fillmethod = %s\n    autofill = %i\n\n", *size, fillmethod, *autof);
+}
+
+void fillInListAuto(struct thelist *alist, int size)
+{
+    int i, t;
+
+    srand(time(NULL));
+
+    for (i = 1; i <= size; i++)
+    {
+        t = rand() % 100 - 10;
+        printf("%i  ", t);
+        append(alist, t);
+        // append(alist, rand() % 100 - 10);
+    }
+    printf("\n\n");
 }
 
 void DefineArrayManual(int* array, int count)

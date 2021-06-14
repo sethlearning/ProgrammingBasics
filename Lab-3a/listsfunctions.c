@@ -28,13 +28,13 @@ void destroy(struct thelist *alist)
 
     while (tmp->next != NULL)
     {
-        printf("Removing: %i - %i\n", i++, tmp->info);
+        printf("Removing %i: %i\n", i++, tmp->info);
         tmpn = tmp->next;
         free(tmp);
         tmp = tmpn;
     }
 
-    printf("Removing: %i - %i\n", i++, tmp->info);
+    printf("Removing %i: %i\n", i++, tmp->info);
     free(tmp);
 }
 
@@ -50,7 +50,7 @@ void print(struct thelist *alist)
     }
 
     for (i = 1; i <= n; i++)
-        printf("%i --> %p", getValue(alist, i), getAddress(alist, i));
+        printf("%i --> %p\n", getValue(alist, i), getAddress(alist, i)->next);
 
     printf("\n");
 }
