@@ -8,6 +8,7 @@
 void exitprogram(char*);
 void processConfig(FILE *config, int *autof, int *size);
 void fillInListAuto(struct thelist *, int);
+void fillInListManual(struct thelist *, int);
 
 
 
@@ -58,6 +59,8 @@ int main(int argc, char* argv[])
 
     if (autofill)
         fillInListAuto(alist, listsize);
+    else
+        fillInListManual(alist, listsize);
 
     print(alist);
     destroy(alist);
@@ -182,6 +185,20 @@ void fillInListAuto(struct thelist *alist, int size)
         // append(alist, rand() % 100 - 10);
     }
     printf("\n\n");
+}
+
+void fillInListManual(struct thelist *alist, int size)
+{
+    int i;
+    char input[10];
+
+    for (i = 1; i <= size; i++)
+    {
+        printf("Введите элемент %i: ", i);
+        gets(input);
+        append(alist, atoi(input));
+    }
+    printf("\n");
 }
 
 void DefineArrayManual(int* array, int count)
