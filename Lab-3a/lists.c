@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
     // char fillmethod[7];
     char message[256];
 
-    int arraysize = 0;
+    int listsize = 0;
     int autofill = -1;
 
     FILE *config;
@@ -50,14 +50,14 @@ int main(int argc, char* argv[])
         exitprogram(message);
     }
 
-    processConfig(config, &autofill, &arraysize);
-    printf("Значения параметров:\n    arraysize = %i\n    autofill = %i\n\n", arraysize, autofill);
+    processConfig(config, &autofill, &listsize);
+    printf("Значения параметров:\n    listsize = %i\n    autofill = %i\n\n", listsize, autofill);
     // printf("autofill = %i\n", autofill);
 
     alist = create();
 
     if (autofill)
-        fillInListAuto(alist, arraysize);
+        fillInListAuto(alist, listsize);
 
     print(alist);
     destroy(alist);
@@ -142,10 +142,10 @@ void processConfig(FILE *config, int *autof, int *size)
             continue;
         }
 
-        if ( strstr(buffer, "arraysize=") )
+        if ( strstr(buffer, "listsize=") )
         {
-            *size = atoi( buffer + strlen("arraysize=") );
-            // printf("%i\n", arraysize);
+            *size = atoi( buffer + strlen("listsize=") );
+            // printf("%i\n", listsize);
             continue;
         }
 
@@ -163,9 +163,9 @@ void processConfig(FILE *config, int *autof, int *size)
         *autof = 0;
 
     if (*size <= 0 || *autof < 0)
-        exitprogram("Ошибка файла конфигурации.\nФайл должен содержать правильные значения параметов arraysize и fillmethod.\n");
+        exitprogram("Ошибка файла конфигурации.\nФайл должен содержать правильные значения параметов listsize и fillmethod.\n");
     
-    // printf("Значения параметров:\n    arraysize = %i\n    fillmethod = %s\n    autofill = %i\n\n", *size, fillmethod, *autof);
+    // printf("Значения параметров:\n    listsize = %i\n    fillmethod = %s\n    autofill = %i\n\n", *size, fillmethod, *autof);
 }
 
 void fillInListAuto(struct thelist *alist, int size)
