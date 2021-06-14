@@ -9,6 +9,7 @@ void exitprogram(char*);
 void processConfig(FILE *config, int *autof, int *size);
 void fillInListAuto(struct thelist *, int);
 void fillInListManual(struct thelist *, int);
+void countNegatives(struct thelist *, int *, int *);
 
 
 
@@ -39,6 +40,7 @@ int main(int argc, char* argv[])
     struct thelist *alist;
 
     int i, t;
+    int ncount = 0, nsum = 0;
 
     // memset(fillmethod, '\0', sizeof(fillmethod));
 
@@ -82,6 +84,9 @@ int main(int argc, char* argv[])
     removeElement(alist, alist->info);
     print(alist);
 
+    // negatives
+    countNegatives(alist, &ncount, &nsum);
+    printf("Количество отрицательных элементов: %i \nИх сумма: %i\n\n", ncount, nsum);
     // destroy
     destroy(alist);
 
@@ -199,10 +204,10 @@ void fillInListAuto(struct thelist *alist, int size)
 
     for (i = 1; i <= size; i++)
     {
-        t = rand() % 100 - 10;
+        t = rand() % 100 - 50;
         printf("%i  ", t);
         append(alist, t);
-        // append(alist, rand() % 100 - 10);
+        // append(alist, rand() % 100 - 50);
     }
     printf("\n\n");
 }
@@ -219,6 +224,22 @@ void fillInListManual(struct thelist *alist, int size)
         append(alist, atoi(input));
     }
     printf("\n");
+}
+
+void countNegatives(struct thelist *alist, int *ncount, int *nsum)
+{
+    int i, value;
+
+    for (i = 1; i <= alist->info; i++)
+    {
+        value = getValue(alist, i);
+        if (value < 0)
+        {
+            (*ncount)++;
+            *nsum += value;
+        }
+    }
+    printf("Count: %i, Sum: %i\n", *ncount, *nsum);
 }
 
 void DefineArrayManual(int* array, int count)
