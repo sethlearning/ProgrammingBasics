@@ -3,17 +3,14 @@
 #include <string.h>
 #include <time.h>
 #include "logo.c"
-
-
-struct thelist
-{
-    int info;
-    struct thelist *next;
-};
-
+#include "listsfunctions.c"
 
 void exitprogram(char*);
 void processConfig(FILE *config, int *autof, int *size);
+
+
+
+
 /*
 void ExitProgram(char*);
 
@@ -37,6 +34,10 @@ int main(int argc, char* argv[])
 
     FILE *config;
 
+    struct thelist *alist;
+
+    int i;
+
     // memset(fillmethod, '\0', sizeof(fillmethod));
 
     logo();
@@ -51,6 +52,18 @@ int main(int argc, char* argv[])
     processConfig(config, &autofill, &arraysize);
     printf("Значения параметров:\n    arraysize = %i\n    autofill = %i\n\n", arraysize, autofill);
     // printf("autofill = %i\n", autofill);
+
+    alist = create();
+
+    if (autofill)
+    {
+        for (i = 1; i <= arraysize; i++)
+        {
+
+        }
+    }
+
+    destroy(alist);
 
 /*
     int count, negativesCount=0, negativesSumma=0, i;
