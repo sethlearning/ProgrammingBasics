@@ -11,6 +11,7 @@ int getValue(struct thelist *, int);
 struct thelist * getAddress(struct thelist *, int);
 void append(struct thelist *, int);
 void insert(struct thelist *, int, int);
+void removeElement(struct thelist *, int);
 
 struct thelist * create()
 {
@@ -92,7 +93,7 @@ void append(struct thelist *alist, int value)
 
 void insert(struct thelist *alist, int n, int value)
 {
-    struct thelist *previous, *next, *new;
+    struct thelist *previous, *new, *next;
 
     if (n > alist->info)
     {
@@ -108,4 +109,17 @@ void insert(struct thelist *alist, int n, int value)
     new->next = next;
     new->info = value;
     alist->info++;
+}
+
+void removeElement(struct thelist *alist, int n)
+{
+    struct thelist *previous, *toremove, *next;
+
+    previous = getAddress(alist, n-1);
+    toremove = previous->next;
+    next = toremove->next;
+
+    previous->next = next;
+    free(toremove);
+    alist->info--;
 }

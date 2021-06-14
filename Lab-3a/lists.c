@@ -66,8 +66,15 @@ int main(int argc, char* argv[])
     print(alist);
 
     // insert
+    printf("Insert\n");
     insert(alist, 3, 100);
     insert(alist, 15, 200);
+    print(alist);
+
+    // remove
+    printf("Remove\n");
+    removeElement(alist, 3);
+    removeElement(alist, 11);
     print(alist);
 
     // destroy
