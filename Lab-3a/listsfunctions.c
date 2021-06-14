@@ -12,6 +12,7 @@ struct thelist * getAddress(struct thelist *, int);
 void append(struct thelist *, int);
 void insert(struct thelist *, int, int);
 void removeElement(struct thelist *, int);
+void replace(struct thelist *, int, int);
 
 struct thelist * create()
 {
@@ -122,4 +123,24 @@ void removeElement(struct thelist *alist, int n)
     previous->next = next;
     free(toremove);
     alist->info--;
+}
+
+void replace(struct thelist *alist, int n1, int n2)
+{
+    struct thelist *before1, *before2, *toreplace1, *toreplace2, *after1, *after2;
+
+    before1 = getAddress(alist, n1 - 1);
+    before2 = getAddress(alist, n2 - 1);
+
+    toreplace1 = before1->next;
+    toreplace2 = before2->next;
+
+    after1 = toreplace1->next;
+    after2 = toreplace2->next;
+
+    before1->next = toreplace2;
+    before2->next = toreplace1;
+
+    toreplace1->next = after2;
+    toreplace2->next = after1;
 }

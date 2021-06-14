@@ -71,10 +71,15 @@ int main(int argc, char* argv[])
     insert(alist, 15, 200);
     print(alist);
 
+    // replace
+    printf("Replace\n");
+    replace(alist, 3, alist->info);
+    print(alist);
+
     // remove
     printf("Remove\n");
     removeElement(alist, 3);
-    removeElement(alist, 11);
+    removeElement(alist, alist->info);
     print(alist);
 
     // destroy
