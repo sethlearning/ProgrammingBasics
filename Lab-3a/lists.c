@@ -176,62 +176,6 @@ void countNegatives(struct thelist *alist, int *ncount, int *nsum)
     printf("Count: %i, Sum: %i\n", *ncount, *nsum);
 }
 
-void DefineArrayManual(int* array, int count)
-{
-    int i;
-    char input[10];
-    for (i=0; i < count; i++)
-    {
-        printf("Введите элемент %d: ", i);
-        gets(input);
-        array[i] = atoi(input);
-    }
-    printf("\n");
-}
-
-void DefineArrayAuto(int* array, int count)
-{
-    int i;
-    srand(time(NULL));
-    for (i=0; i < count; i++)
-    {
-        array[i] = rand() % 100 - 50;
-    }
-}
-
-void PrintArray(int* array, int count)
-{
-    int i;
-    printf("Содержимое массива:\n");
-    for (i=0; i < count; i++)
-    {
-        printf("%d ", array[i]);
-    }
-    printf("\n\n");
-}
-
-void CountNegatives(int* array, int count, int* negativesCount, int* negativesSumma)
-{
-    int i;
-    for (i=0; i < count; i++)
-    {
-        if (array[i] < 0)
-        {
-            *negativesCount += 1;
-            *negativesSumma += array[i];
-        }
-    }
-}
-/*
-void ExitProgram(char* message)
-{
-    printf("%s\n", message);
-    printf("Нажмите Enter!");
-    getchar();
-    exit(0);
-}
-*/
-
 void exitprogram(char *message)
 {
     puts(message);
