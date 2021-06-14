@@ -14,8 +14,6 @@ void countNegatives(struct thelist *, int *, int *);
 int main(int argc, char* argv[])
 {
     char *configFileName = "lists.conf";
-    // char buffer[128];
-    // char fillmethod[7];
     char message[256];
 
     int listsize = 0;
@@ -28,8 +26,6 @@ int main(int argc, char* argv[])
     int i, t;
     int ncount = 0, nsum = 0;
 
-    // memset(fillmethod, '\0', sizeof(fillmethod));
-
     logo();
     printf("Лабораторная работа №3.\nВ списке целых чисел подсчитать количество отрицательных элементов и их сумму.\n\n");
 
@@ -41,7 +37,6 @@ int main(int argc, char* argv[])
 
     processConfig(config, &autofill, &listsize);
     printf("Значения параметров:\n    listsize = %i\n    autofill = %i\n\n", listsize, autofill);
-    // printf("autofill = %i\n", autofill);
 
     // create
     alist = create();
