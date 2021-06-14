@@ -89,7 +89,6 @@ void processConfig(FILE *config, int *autof, int *size)
     while(1)
     {
         if ( fgets(buffer, 128, config) == NULL ) break;
-        // if ( feof(config) ) break;
 
         if (buffer[0] == '#') continue;
 
@@ -102,14 +101,12 @@ void processConfig(FILE *config, int *autof, int *size)
         if ( strstr(buffer, "listsize=") )
         {
             *size = atoi( buffer + strlen("listsize=") );
-            // printf("%i\n", listsize);
             continue;
         }
 
         if ( strstr(buffer, "fillmethod=") )
         {
             strncpy(fillmethod, buffer + strlen("fillmethod="), 6);
-            // printf("%s", fillmethod);
             continue;
         }
     }
@@ -121,8 +118,6 @@ void processConfig(FILE *config, int *autof, int *size)
 
     if (*size <= 0 || *autof < 0)
         exitprogram("Ошибка файла конфигурации.\nФайл должен содержать правильные значения параметов listsize и fillmethod.\n");
-    
-    // printf("Значения параметров:\n    listsize = %i\n    fillmethod = %s\n    autofill = %i\n\n", *size, fillmethod, *autof);
 }
 
 void fillInListAuto(struct thelist *alist, int size)
