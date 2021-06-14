@@ -31,13 +31,13 @@ void destroy(struct thelist *alist)
 
     while (tmp->next != NULL)
     {
-        printf("Removing %i: %i\n", i++, tmp->info);
+        // printf("Removing %i: %i\n", i++, tmp->info);
         tmpn = tmp->next;
         free(tmp);
         tmp = tmpn;
     }
 
-    printf("Removing %i: %i\n\n", i++, tmp->info);
+    // printf("Removing %i: %i\n\n", i++, tmp->info);
     free(tmp);
 }
 
