@@ -5,6 +5,7 @@
 #include "logo.c"
 
 void exitprogram(char*);
+void processConfig(FILE *config, int *autof, int *size);
 /*
 void ExitProgram(char*);
 
@@ -14,11 +15,13 @@ void PrintArray(int*, int);
 void CountNegatives(int*, int, int*, int*);
 */
 
+
+
 int main(int argc, char* argv[])
 {
     char *configFileName = "lists.conf";
-    char buffer[128];
-    char fillmethod[7];
+    // char buffer[128];
+    // char fillmethod[7];
     char message[256];
 
     int arraysize = 0;
@@ -26,7 +29,7 @@ int main(int argc, char* argv[])
 
     FILE *config;
 
-    memset(fillmethod, '\0', sizeof(fillmethod));
+    // memset(fillmethod, '\0', sizeof(fillmethod));
 
     logo();
     printf("Лабораторная работа №3.\nВ списке целых чисел подсчитать количество отрицательных элементов и их сумму.\n\n");
@@ -37,48 +40,8 @@ int main(int argc, char* argv[])
         exitprogram(message);
     }
 
-    fgets(buffer, 128, config);
-
-    if ( strcmp(buffer, "#!Config file for lists\n") )
-        exitprogram("Ошибка заголовка файла конфигурации.\nОжидаемое значение: #!Config file for lists\n");
-
-    while(1)
-    {
-        if ( fgets(buffer, 128, config) == NULL ) break;
-        // if ( feof(config) ) break;
-
-        if (buffer[0] == '#') continue;
-
-        if (buffer[0] == '!')
-        {
-            puts(buffer + 1);
-            continue;
-        }
-
-        if ( strstr(buffer, "arraysize=") )
-        {
-            arraysize = atoi( buffer + strlen("arraysize=") );
-            // printf("%i\n", arraysize);
-            continue;
-        }
-
-        if ( strstr(buffer, "fillmethod=") )
-        {
-            strncpy(fillmethod, buffer + strlen("fillmethod="), 6);
-            // printf("%s", fillmethod);
-            continue;
-        }
-    }
-
-    if ( !strcmp(fillmethod, "auto") )
-        autofill = 1;
-    else if ( !strcmp(fillmethod, "manual") )
-        autofill = 0;
-
-    if (arraysize <= 0 || autofill < 0)
-        exitprogram("Ошибка файла конфигурации.\nФайл должен содержать правильные значения параметов arraysize и fillmethod.\n");
-    
-    printf("Значения параметров:\n    arraysize = %i\n    fillmethod = %s\n\n", arraysize, fillmethod);
+    processConfig(config, &autofill, &arraysize);
+    printf("Значения параметров:\n    arraysize = %i\n    autofill = %i\n\n", arraysize, autofill);
     // printf("autofill = %i\n", autofill);
 
 /*
@@ -134,6 +97,57 @@ int main(int argc, char* argv[])
 
     printf("Количество отрицательных элементов: %d\nСумма отрицательных элементов: %d\n\n", negativesCount, negativesSumma);
 */
+}
+
+void processConfig(FILE *config, int *autof, int *size)
+{
+    char buffer[128];
+    char fillmethod[7];
+
+    memset(fillmethod, '\0', sizeof(fillmethod));
+
+    fgets(buffer, 128, config);
+
+    if ( strcmp(buffer, "#!Config file for lists\n") )
+        exitprogram("Ошибка заголовка файла конфигурации.\nОжидаемое значение: #!Config file for lists\n");
+
+    while(1)
+    {
+        if ( fgets(buffer, 128, config) == NULL ) break;
+        // if ( feof(config) ) break;
+
+        if (buffer[0] == '#') continue;
+
+        if (buffer[0] == '!')
+        {
+            puts(buffer + 1);
+            continue;
+        }
+
+        if ( strstr(buffer, "arraysize=") )
+        {
+            *size = atoi( buffer + strlen("arraysize=") );
+            // printf("%i\n", arraysize);
+            continue;
+        }
+
+        if ( strstr(buffer, "fillmethod=") )
+        {
+            strncpy(fillmethod, buffer + strlen("fillmethod="), 6);
+            // printf("%s", fillmethod);
+            continue;
+        }
+    }
+
+    if ( !strcmp(fillmethod, "auto") )
+        *autof = 1;
+    else if ( !strcmp(fillmethod, "manual") )
+        *autof = 0;
+
+    if (*size <= 0 || *autof < 0)
+        exitprogram("Ошибка файла конфигурации.\nФайл должен содержать правильные значения параметов arraysize и fillmethod.\n");
+    
+    // printf("Значения параметров:\n    arraysize = %i\n    fillmethod = %s\n    autofill = %i\n\n", *size, fillmethod, *autof);
 }
 
 void DefineArrayManual(int* array, int count)
