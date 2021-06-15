@@ -3,30 +3,29 @@
 #include <string.h>
 #include <time.h>
 #include "logo.c"
+#include "listsfunctions.c"
 
 void exitprogram(char*);
-/*
-void ExitProgram(char*);
-
-void DefineArrayManual(int*, int);
-void DefineArrayAuto(int*, int);
-void PrintArray(int*, int);
-void CountNegatives(int*, int, int*, int*);
-*/
+void processConfig(FILE *, int *, int *, int *);
+void fillInListAuto(struct thelist *, int);
+void fillInListManual(struct thelist *, int);
+void countNegatives(struct thelist *, int *, int *);
 
 int main(int argc, char* argv[])
 {
     char *configFileName = "lists.conf";
-    char buffer[128];
-    char fillmethod[7];
     char message[256];
 
-    int arraysize = 0;
+    int listsize = 0;
     int autofill = -1;
+    int additional = 0;
 
     FILE *config;
 
-    memset(fillmethod, '\0', sizeof(fillmethod));
+    struct thelist *alist;
+
+    int i, t;
+    int ncount = 0, nsum = 0;
 
     logo();
     printf("Лабораторная работа №3.\nВ списке целых чисел подсчитать количество отрицательных элементов и их сумму.\n\n");
@@ -37,6 +36,56 @@ int main(int argc, char* argv[])
         exitprogram(message);
     }
 
+    processConfig(config, &autofill, &listsize, &additional);
+    printf("Значения параметров:\n    listsize = %i\n    autofill = %i\n\n", listsize, autofill);
+
+    // create
+    alist = create();
+
+    if (autofill)
+        fillInListAuto(alist, listsize);
+    else
+        fillInListManual(alist, listsize);
+
+    printf("Содержимое списка:\n");
+    print(alist);
+
+    if (additional)
+    {
+        // insert
+        printf("Insert\n");
+        insert(alist, 3, 100);
+        insert(alist, 15, 200);
+        print(alist);
+
+        // replace
+        printf("Replace\n");
+        replace(alist, 3, alist->info);
+        print(alist);
+
+        // remove
+        printf("Remove\n");
+        removeElement(alist, 3);
+        removeElement(alist, alist->info);
+        print(alist);
+    }
+
+    // negatives
+    countNegatives(alist, &ncount, &nsum);
+    printf("Количество отрицательных элементов: %i \nИх сумма: %i\n\n", ncount, nsum);
+
+    // destroy
+    destroy(alist);
+}
+
+void processConfig(FILE *config, int *autof, int *size, int *additional)
+{
+    char buffer[128];
+    char fillmethod[7], useAdditionalFunctions[4];
+
+    memset(fillmethod, '\0', sizeof(fillmethod));
+    memset(useAdditionalFunctions, '\0', sizeof(useAdditionalFunctions));
+
     fgets(buffer, 128, config);
 
     if ( strcmp(buffer, "#!Config file for lists\n") )
@@ -45,7 +94,6 @@ int main(int argc, char* argv[])
     while(1)
     {
         if ( fgets(buffer, 128, config) == NULL ) break;
-        // if ( feof(config) ) break;
 
         if (buffer[0] == '#') continue;
 
@@ -55,142 +103,75 @@ int main(int argc, char* argv[])
             continue;
         }
 
-        if ( strstr(buffer, "arraysize=") )
+        if ( strstr(buffer, "listsize=") )
         {
-            arraysize = atoi( buffer + strlen("arraysize=") );
-            // printf("%i\n", arraysize);
+            *size = atoi( buffer + strlen("listsize=") );
             continue;
         }
 
         if ( strstr(buffer, "fillmethod=") )
         {
             strncpy(fillmethod, buffer + strlen("fillmethod="), 6);
-            // printf("%s", fillmethod);
+            continue;
+        }
+
+        if ( strstr(buffer, "useAdditionalFunctions=") )
+        {
+            strncpy(useAdditionalFunctions, buffer + strlen("useAdditionalFunctions="), 3);
             continue;
         }
     }
 
-    if ( !strcmp(fillmethod, "auto") )
-        autofill = 1;
+    if ( !strcmp(fillmethod, "auto") || !strcmp(fillmethod, "auto\n"))
+        *autof = 1;
     else if ( !strcmp(fillmethod, "manual") )
-        autofill = 0;
+        *autof = 0;
 
-    if (arraysize <= 0 || autofill < 0)
-        exitprogram("Ошибка файла конфигурации.\nФайл должен содержать правильные значения параметов arraysize и fillmethod.\n");
-    
-    printf("Значения параметров:\n    arraysize = %i\n    fillmethod = %s\n\n", arraysize, fillmethod);
-    // printf("autofill = %i\n", autofill);
+    if (*size <= 0 || *autof < 0)
+        exitprogram("Ошибка файла конфигурации.\nФайл должен содержать правильные значения параметов listsize и fillmethod.\n");
 
-/*
-    int count, negativesCount=0, negativesSumma=0, i;
-    char mode[7], example[150];
-
-    logo();
-    printf("Лабораторная работа №3.\nПодсчет количества отрицательных чисел и их суммы.\n\n");
-    snprintf(example, 200, "Пример использования:\n%s NumberOfElements=number ArrayEnteringMode=auto/manual", argv[0]);
-
-
-    if (argc < 3)
-    {
-        printf("Недостаточно параметров.\n");
-        ExitProgram(example);
-    }
-
-    for (i = 1; i < argc; i++)
-    {
-        if (strstr(argv[i], "ArrayEnteringMode="))
-            strcpy(mode, argv[i] + 18);
-
-        if (strstr(argv[i], "NumberOfElements="))
-            count = atoi(argv[i] + 17);
-    }
-
-    if (count < 2)
-    {
-        printf("Неверные параметры.\n");
-        ExitProgram(example);
-    }
-    printf("Количество элементов: %d\n", count);
-
-    int array[count];
-    if(!strcmp(mode, "manual"))
-    {
-        printf("Метод ввода массива: %s\n\n", mode);
-        DefineArrayManual(array, count);
-    }
-    else if (!strcmp(mode, "auto"))
-    {
-        printf("Метод ввода массива: %s\n\n", mode);
-        DefineArrayAuto(array, count);
-    }
-    else
-    {
-        printf("Неверные параметры.\n");
-        ExitProgram(example);
-    }
-
-    PrintArray(array, count);
-    CountNegatives(array, count, &negativesCount, &negativesSumma);
-
-    printf("Количество отрицательных элементов: %d\nСумма отрицательных элементов: %d\n\n", negativesCount, negativesSumma);
-*/
+    if ( !strcmp(useAdditionalFunctions, "yes") )
+        *additional = 1;
 }
 
-void DefineArrayManual(int* array, int count)
+void fillInListAuto(struct thelist *alist, int size)
+{
+    int i, t;
+
+    srand(time(NULL));
+
+    for (i = 1; i <= size; i++)
+        append(alist, rand() % 100 - 50);
+}
+
+void fillInListManual(struct thelist *alist, int size)
 {
     int i;
     char input[10];
-    for (i=0; i < count; i++)
+
+    for (i = 1; i <= size; i++)
     {
-        printf("Введите элемент %d: ", i);
+        printf("Введите элемент %i: ", i);
         gets(input);
-        array[i] = atoi(input);
+        append(alist, atoi(input));
     }
     printf("\n");
 }
 
-void DefineArrayAuto(int* array, int count)
+void countNegatives(struct thelist *alist, int *ncount, int *nsum)
 {
-    int i;
-    srand(time(NULL));
-    for (i=0; i < count; i++)
-    {
-        array[i] = rand() % 100 - 50;
-    }
-}
+    int i, value;
 
-void PrintArray(int* array, int count)
-{
-    int i;
-    printf("Содержимое массива:\n");
-    for (i=0; i < count; i++)
+    for (i = 1; i <= alist->info; i++)
     {
-        printf("%d ", array[i]);
-    }
-    printf("\n\n");
-}
-
-void CountNegatives(int* array, int count, int* negativesCount, int* negativesSumma)
-{
-    int i;
-    for (i=0; i < count; i++)
-    {
-        if (array[i] < 0)
+        value = getValue(alist, i);
+        if (value < 0)
         {
-            *negativesCount += 1;
-            *negativesSumma += array[i];
+            (*ncount)++;
+            *nsum += value;
         }
     }
 }
-/*
-void ExitProgram(char* message)
-{
-    printf("%s\n", message);
-    printf("Нажмите Enter!");
-    getchar();
-    exit(0);
-}
-*/
 
 void exitprogram(char *message)
 {
