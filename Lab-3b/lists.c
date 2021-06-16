@@ -9,7 +9,6 @@ void exitprogram(char*);
 void processConfig(FILE *, int *, int *, int *, int *);
 void fillInListAuto(struct thelist *, int);
 void fillInListManual(struct thelist *, int);
-// void countNegatives(struct thelist *, int *, int *);
 void inversion(struct thelist *, int, int);
 
 int main(int argc, char* argv[])
@@ -26,7 +25,7 @@ int main(int argc, char* argv[])
 
     struct thelist *alist;
 
-    int i, t;
+    int i;
     int ncount = 0, nsum = 0;
 
     logo();
@@ -52,37 +51,12 @@ int main(int argc, char* argv[])
     printf("Исходный список:\n");
     print(alist);
 
+    // invert
     inversion(alist, inversionStart, inversionQuantity);
 
     printf("Инвертированный список:\n");
     print(alist);
 
-/*
-    if (additional)
-    {
-        // insert
-        printf("Insert\n");
-        insert(alist, 3, 100);
-        insert(alist, 15, 200);
-        print(alist);
-
-        // replace
-        printf("Replace\n");
-        replace(alist, 3, alist->info);
-        print(alist);
-
-        // remove
-        printf("Remove\n");
-        removeElement(alist, 3);
-        removeElement(alist, alist->info);
-        print(alist);
-    }
-*/
-/*
-    // negatives
-    countNegatives(alist, &ncount, &nsum);
-    printf("Количество отрицательных элементов: %i \nИх сумма: %i\n\n", ncount, nsum);
-*/
     // destroy
     destroy(alist);
 }
@@ -178,23 +152,6 @@ void inversion(struct thelist *alist, int start, int quantity)
     for (i = start; i < start + (quantity / 2); i++)
         replace( alist, i, (start + quantity - 1 - i + start) );
 }
-
-/*
-void countNegatives(struct thelist *alist, int *ncount, int *nsum)
-{
-    int i, value;
-
-    for (i = 1; i <= alist->info; i++)
-    {
-        value = getValue(alist, i);
-        if (value < 0)
-        {
-            (*ncount)++;
-            *nsum += value;
-        }
-    }
-}
-*/
 
 void exitprogram(char *message)
 {
