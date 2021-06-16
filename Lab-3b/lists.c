@@ -6,7 +6,7 @@
 #include "listsfunctions.c"
 
 void exitprogram(char*);
-void processConfig(FILE *, int *, int *, int *);
+void processConfig(FILE *, int *, int *, int *, int *);
 void fillInListAuto(struct thelist *, int);
 void fillInListManual(struct thelist *, int);
 void countNegatives(struct thelist *, int *, int *);
@@ -18,7 +18,8 @@ int main(int argc, char* argv[])
 
     int listsize = 0;
     int autofill = -1;
-    int additional = 0;
+    int inversionStart = -1;
+    int inversionQuantity = -1;
 
     FILE *config;
 
@@ -36,8 +37,8 @@ int main(int argc, char* argv[])
         exitprogram(message);
     }
 
-    processConfig(config, &autofill, &listsize, &additional);
-    printf("Значения параметров:\n    listsize = %i\n    autofill = %i\n\n", listsize, autofill);
+    processConfig(config, &autofill, &listsize, &inversionStart, &inversionQuantity);
+    printf("Значения параметров:\n    listsize = %i\n    autofill = %i\n    inversionStart = %i\n    inversionQuantity = %i\n\n", listsize, autofill, inversionStart, inversionQuantity);
 
     // create
     alist = create();
@@ -49,7 +50,7 @@ int main(int argc, char* argv[])
 
     printf("Содержимое списка:\n");
     print(alist);
-
+/*
     if (additional)
     {
         // insert
@@ -69,7 +70,7 @@ int main(int argc, char* argv[])
         removeElement(alist, alist->info);
         print(alist);
     }
-
+*/
     // negatives
     countNegatives(alist, &ncount, &nsum);
     printf("Количество отрицательных элементов: %i \nИх сумма: %i\n\n", ncount, nsum);
@@ -78,7 +79,7 @@ int main(int argc, char* argv[])
     destroy(alist);
 }
 
-void processConfig(FILE *config, int *autof, int *size, int *additional)
+void processConfig(FILE *config, int *autof, int *size, int *start, int *quantity)
 {
     char buffer[128];
     char fillmethod[7], useAdditionalFunctions[4];
@@ -115,9 +116,15 @@ void processConfig(FILE *config, int *autof, int *size, int *additional)
             continue;
         }
 
-        if ( strstr(buffer, "useAdditionalFunctions=") )
+        if ( strstr(buffer, "inversionStart=") )
         {
-            strncpy(useAdditionalFunctions, buffer + strlen("useAdditionalFunctions="), 3);
+            *start = atoi( buffer + strlen("inversionStart=") );
+            continue;
+        }
+
+        if ( strstr(buffer, "inversionQuantity=") )
+        {
+            *quantity = atoi( buffer + strlen("inversionQuantity=") );
             continue;
         }
     }
@@ -127,11 +134,9 @@ void processConfig(FILE *config, int *autof, int *size, int *additional)
     else if ( !strcmp(fillmethod, "manual") )
         *autof = 0;
 
-    if (*size <= 0 || *autof < 0)
-        exitprogram("Ошибка файла конфигурации.\nФайл должен содержать правильные значения параметов listsize и fillmethod.\n");
+    if (*size <= 0 || *autof < 0 || *start < 1 || *quantity < 1 || *quantity > *size)
+        exitprogram("Ошибка файла конфигурации.\nФайл должен содержать правильные значения параметов listsize, fillmethod, inversionStart и inversionQuantity.\n");
 
-    if ( !strcmp(useAdditionalFunctions, "yes") )
-        *additional = 1;
 }
 
 void fillInListAuto(struct thelist *alist, int size)
