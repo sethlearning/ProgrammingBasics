@@ -9,7 +9,7 @@ void exitprogram(char*);
 void processConfig(FILE *, int *, int *, int *, int *);
 void fillInListAuto(struct thelist *, int);
 void fillInListManual(struct thelist *, int);
-void countNegatives(struct thelist *, int *, int *);
+// void countNegatives(struct thelist *, int *, int *);
 
 int main(int argc, char* argv[])
 {
@@ -71,10 +71,11 @@ int main(int argc, char* argv[])
         print(alist);
     }
 */
+/*
     // negatives
     countNegatives(alist, &ncount, &nsum);
     printf("Количество отрицательных элементов: %i \nИх сумма: %i\n\n", ncount, nsum);
-
+*/
     // destroy
     destroy(alist);
 }
@@ -162,7 +163,7 @@ void fillInListManual(struct thelist *alist, int size)
     }
     printf("\n");
 }
-
+/*
 void countNegatives(struct thelist *alist, int *ncount, int *nsum)
 {
     int i, value;
@@ -177,7 +178,7 @@ void countNegatives(struct thelist *alist, int *ncount, int *nsum)
         }
     }
 }
-
+*/
 void exitprogram(char *message)
 {
     puts(message);
