@@ -10,6 +10,7 @@ void processConfig(FILE *, int *, int *, int *, int *);
 void fillInListAuto(struct thelist *, int);
 void fillInListManual(struct thelist *, int);
 // void countNegatives(struct thelist *, int *, int *);
+void inversion(struct thelist *, int, int);
 
 int main(int argc, char* argv[])
 {
@@ -48,8 +49,14 @@ int main(int argc, char* argv[])
     else
         fillInListManual(alist, listsize);
 
-    printf("Содержимое списка:\n");
+    printf("Исходный список:\n");
     print(alist);
+
+    inversion(alist, inversionStart, inversionQuantity);
+
+    printf("Инвертированный список:\n");
+    print(alist);
+
 /*
     if (additional)
     {
@@ -163,6 +170,15 @@ void fillInListManual(struct thelist *alist, int size)
     }
     printf("\n");
 }
+
+void inversion(struct thelist *alist, int start, int quantity)
+{
+    int i;
+
+    for (i = start; i < start + (quantity / 2); i++)
+        replace( alist, i, (start + quantity - 1 - i + start) );
+}
+
 /*
 void countNegatives(struct thelist *alist, int *ncount, int *nsum)
 {
@@ -179,6 +195,7 @@ void countNegatives(struct thelist *alist, int *ncount, int *nsum)
     }
 }
 */
+
 void exitprogram(char *message)
 {
     puts(message);
