@@ -4,13 +4,14 @@
 #include <time.h>
 #include "logo.c"
 
+void process(FILE *, FILE *);
 void exitprogram(char *);
 
 int main(int argc, char* argv[])
 {
     char inFileName[128], outFileName[128];
     char message[256];
-    unsigned char c, cc;
+    // unsigned char c, cc;
     FILE *in, *out;
 
     logo();
@@ -44,6 +45,18 @@ int main(int argc, char* argv[])
     printf("Исходный файл: %s\nРезультирующий файл: %s\n\n", inFileName, outFileName);
 
     // process
+    process(in, out);
+
+    // close files
+    fclose(in);
+    fclose(out);
+
+}
+
+void process(FILE *in, FILE *out)
+{
+    unsigned char c, cc;
+
     while (1)
     {
         c = getc(in);
@@ -368,12 +381,7 @@ int main(int argc, char* argv[])
         // fputc(c, result);
 
     }
-    // close files
-    fclose(in);
-    fclose(out);
-
 }
-
 
 /*
 void processConfig(FILE *config, int *autof, int *size, int *additional)
