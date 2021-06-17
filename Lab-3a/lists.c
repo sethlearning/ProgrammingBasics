@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 
     struct thelist *alist;
 
-    int i, t;
+    int i;
     int ncount = 0, nsum = 0;
 
     logo();
