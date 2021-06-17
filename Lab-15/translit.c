@@ -374,6 +374,8 @@ int main(int argc, char* argv[])
 
 }
 
+
+/*
 void processConfig(FILE *config, int *autof, int *size, int *additional)
 {
     char buffer[128];
@@ -429,7 +431,7 @@ void processConfig(FILE *config, int *autof, int *size, int *additional)
     if ( !strcmp(useAdditionalFunctions, "yes") )
         *additional = 1;
 }
-
+*/
 
 void exitprogram(char *message)
 {
